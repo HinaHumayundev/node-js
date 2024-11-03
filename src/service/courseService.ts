@@ -29,3 +29,28 @@ export const addCourse = async (course: Course): Promise<void> => {
 	courses.push(course);
 	await saveCourses(courses);
 };
+
+export const updateCourse = async (
+	id: number,
+	updatedCourse: Partial<Course>
+): Promise<Course | null> => {
+	const courses = await getCourses();
+	const index = courses.findIndex((course) => course.id === id);
+
+	if (index === -1) return null;
+
+	courses[index] = { ...courses[index], ...updatedCourse };
+	await saveCourses(courses);
+	return courses[index];
+};
+
+export const deleteCourse = async (id: number): Promise<boolean> => {
+	const courses = await getCourses();
+	const index = courses.findIndex((course) => course.id === id);
+
+	if (index === -1) return false;
+
+	courses.splice(index, 1);
+	await saveCourses(courses);
+	return true;
+};

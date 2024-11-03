@@ -1,7 +1,14 @@
+// src/routes/courseRoutes.ts
 import { Router } from "express";
-import { getCourses, addCourse } from "../controller/courseController";
+import {
+	getCourses,
+	addCourse,
+	updateCourse,
+	deleteCourse,
+} from "../controller/courseController";
 import schemaValidator from "../middlewares/schemaValidator";
 import courseSchema from "../schemas/courseSchema";
+
 const router = Router();
 /**
  * @swagger
@@ -94,8 +101,42 @@ const router = Router();
  *     responses:
  *       201:
  *         description: "Course successfully added"
+ * /api/courses/{id}:
+ *   put:
+ *     summary: "Update a course by ID"
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: "Course ID"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Course'
+ *     responses:
+ *       200:
+ *         description: "Course successfully updated"
+ *   delete:
+ *     summary: "Delete a course by ID"
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: "Course ID"
+ *     responses:
+ *       204:
+ *         description: "Course successfully deleted"
  */
+
 router.get("/courses", getCourses);
 router.post("/courses", schemaValidator(courseSchema), addCourse);
+router.put("/courses/:id", schemaValidator(courseSchema), updateCourse);
+router.delete("/courses/:id", deleteCourse);
 
 export default router;

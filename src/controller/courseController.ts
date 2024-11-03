@@ -28,3 +28,44 @@ export const addCourse = async (
 		next(error);
 	}
 };
+
+export const updateCourse = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const courseId = parseInt(req.params.id, 10);
+		const updatedCourse: Partial<Course> = req.body;
+
+		const result = await courseService.updateCourse(courseId, updatedCourse);
+		if (!result) {
+			res.status(404).json({ message: "Course not found" });
+			return;
+		}
+
+		res.json(result);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const deleteCourse = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const courseId = parseInt(req.params.id, 10);
+		const success = await courseService.deleteCourse(courseId);
+
+		if (!success) {
+			res.status(404).json({ message: "Course not found" });
+			return;
+		}
+
+		res.status(204).send();
+	} catch (error) {
+		next(error);
+	}
+};
