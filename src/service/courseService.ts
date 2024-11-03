@@ -9,10 +9,11 @@ const data = Data;
 
 export const getCourses = async (): Promise<Course[]> => {
 	try {
-		return data as Course[];
+		const data = await fs.readFile(dataFilePath, "utf-8");
+		return JSON.parse(data);
 	} catch (error: any) {
 		if (error.code === "ENOENT") {
-			await saveCourses([]);
+			await saveCourses(data as Course[]);
 			return [];
 		}
 		throw error;
