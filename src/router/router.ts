@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getCourses, addCourse } from "../controller/courseController";
-import { validateCourse } from "../middlewares/validator";
-
+import schemaValidator from "../middlewares/schemaValidator";
+import courseSchema from "../schemas/courseSchema";
 const router = Router();
 /**
  * @swagger
@@ -96,6 +96,6 @@ const router = Router();
  *         description: "Course successfully added"
  */
 router.get("/courses", getCourses);
-router.post("/courses", validateCourse, addCourse);
+router.post("/courses", schemaValidator(courseSchema), addCourse);
 
 export default router;
