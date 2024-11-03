@@ -3,7 +3,7 @@ import * as courseService from "../service/courseService";
 import { Course } from "../models/course";
 
 export const getCourses = async (
-	req: Request,
+	_req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
