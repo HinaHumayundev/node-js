@@ -8,8 +8,9 @@ import router from "./router/router";
 import { swaggerSpec, swaggerUi } from "./config/swaggerConfig";
 import { errorHandler } from "./middlewares/errorHandler";
 import { requestLogger } from "./middlewares/requestLogger";
+import { rateLimiter } from "./middlewares/rateLimiter";
 
-const app = express();
+export const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,9 +21,10 @@ app.use("/api", router);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(errorHandler);
 app.use(requestLogger);
+app.use(rateLimiter);
 const port = 3000;
 
-const server = http.createServer(app);
+export const server = http.createServer(app);
 
 server.listen(port, () => {
 	console.log("The application is listening on port 3000!");
